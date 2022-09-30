@@ -10,7 +10,7 @@ public class Rigidbody2dMovement : MonoBehaviour
     private Rigidbody2D _myRb;
     private Collider2D _myCollider;
 
- public bool isOnGround;
+    public bool isOnGround;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +21,30 @@ public class Rigidbody2dMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        PlayerMovement();
+
+        Cum();
+    }
+
+    void PlayerMovement()
+    {
         float horizontalInput = Input.GetAxis("Horizontal");
         
         _myRb.velocity = new Vector2(horizontalInput * moveSpeed, _myRb.velocity.y);
+    }
 
-        if(Input.GetButtonDown("Jump"))
+    void Cum()
+    {
+            if(_myCollider.IsTouchingLayers(LayerMask.GetMask("ground")))
+            {
+                isOnGround = true;
+            }
+            else
+            {
+                isOnGround = false;
+            }
+
+        if(Input.GetButtonDown("Jump") && isOnGround)
         {
             _myRb.velocity = new Vector2(_myRb.velocity.x, jumpHeight);
         }
